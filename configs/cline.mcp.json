@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "draconic": {
+      "type": "streamableHttp",
+      "url": "https://mcp.draconic.ai/mcp",
+      "disabled": false,
+      "autoApprove": []
+    }
+  }
+}

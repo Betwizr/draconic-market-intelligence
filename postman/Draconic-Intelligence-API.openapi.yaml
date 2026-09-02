@@ -1,0 +1,224 @@
+openapi: 3.1.0
+info:
+  title: Draconic Intelligence API
+  version: 1.0.0
+  description: Analysis-only Draconic market intelligence for agents and software systems. Successful intelligence calls save the conversation and consume one existing Draconic credit.
+servers:
+  - url: https://api.draconic.ai
+security:
+  - bearerAuth: []
+  - apiKeyAuth: []
+paths:
+  /v1/agents/ask:
+    post:
+      summary: Ask Draconic
+      description: Runs the current Draconic analysis and consumes one existing Draconic credit after a successful response.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AskRequest'
+      responses:
+        '200':
+          description: Draconic analysis.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AskResponse'
+        '401': { description: Authentication failed. }
+        '402': { description: No intelligence credits remain. }
+        '429': { description: The account rate limit was reached. }
+  /v1/agents/usage:
+    get:
+      summary: Get shared account usage
+      description: Returns the existing Draconic credit balance without consuming a credit.
+      responses:
+        '200':
+          description: Current balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usage'
+  /v1/agents/coverage:
+    get:
+      summary: List current instrument coverage
+      description: Returns safe availability metadata derived from source-data freshness. It never returns market prices.
+      security: []
+      parameters:
+        - in: query
+          name: market
+          schema:
+            type: string
+            enum: [nse, us, crypto, forex, commodities]
+        - in: query
+          name: timeframe
+          schema:
+            type: string
+            default: 5m
+            enum: [1m, 5m, 15m, 1h, multi-timeframe]
+      responses:
+        '200':
+          description: Current coverage manifest.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoverageManifest'
+  /v1/agents/coverage/{symbol}:
+    get:
+      summary: Check one instrument
+      security: []
+      parameters:
+        - in: path
+          name: symbol
+          required: true
+          schema: { type: string }
+        - in: query
+          name: timeframe
+          schema:
+            type: string
+            default: 5m
+            enum: [1m, 5m, 15m, 1h, multi-timeframe]
+      responses:
+        '200':
+          description: Instrument availability.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoverageInstrument'
+        '404': { description: The instrument is not configured. }
+  /v1/agents/keys:
+    get:
+      summary: List API keys
+      description: Requires an existing Draconic account token. Full key secrets are never returned.
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200': { description: Safe key metadata. }
+    post:
+      summary: Create an API key
+      description: Requires an existing Draconic account token. The full secret is returned once.
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name: { type: string, minLength: 1, maxLength: 64 }
+      responses:
+        '201': { description: The new key and safe metadata. }
+  /v1/agents/keys/{key_id}/revoke:
+    post:
+      summary: Revoke an API key
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: key_id
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '204': { description: Revoked. }
+        '404': { description: An active key owned by this account was not found. }
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+  schemas:
+    AskRequest:
+      type: object
+      additionalProperties: false
+      required: [question, market, instruments]
+      properties:
+        question: { type: string, minLength: 1, maxLength: 20000 }
+        market: { type: string, enum: [nse, us, crypto, forex, commodities] }
+        instruments:
+          type: array
+          minItems: 1
+          maxItems: 5
+          items: { type: string }
+        timeframe:
+          type: string
+          enum: [1m, 5m, 15m, 1h, multi-timeframe]
+          default: multi-timeframe
+        chat_id: { type: [string, 'null'] }
+    AskResponse:
+      type: object
+      required: [analysis, chat_id, coverage]
+      properties:
+        analysis: { type: string }
+        chat_id: { type: string }
+        message_ids:
+          oneOf:
+            - type: object
+              properties:
+                user_message_id: { type: string }
+                assistant_message_id: { type: string }
+            - type: 'null'
+        credits:
+          oneOf:
+            - type: object
+              properties:
+                credits_remaining: { type: integer }
+                free_remaining: { type: integer }
+                plan_remaining: { type: integer }
+                topup_remaining: { type: integer }
+                current_plan: { type: string }
+            - type: 'null'
+        coverage:
+          type: object
+          required: [market, instruments, timeframe, source_updated_at]
+          properties:
+            market: { type: string, enum: [nse, us, crypto, forex, commodities] }
+            instruments:
+              type: array
+              items: { type: string }
+            timeframe: { type: string, enum: [1m, 5m, 15m, 1h, multi-timeframe] }
+            source_updated_at: { type: string, format: date-time }
+    Usage:
+      type: object
+      required: [success, credits_remaining, free_remaining, plan_remaining, topup_remaining, current_plan]
+      properties:
+        success: { type: boolean }
+        credits_remaining: { type: integer }
+        free_remaining: { type: integer }
+        plan_remaining: { type: integer }
+        topup_remaining: { type: integer }
+        current_plan: { type: string }
+        plan_type: { type: [string, 'null'] }
+        next_billing_date: { type: [string, 'null'] }
+    CoverageInstrument:
+      type: object
+      required: [symbol, market, available, timeframe, request_coverage_url]
+      properties:
+        symbol: { type: string }
+        market: { type: string, enum: [nse, us, crypto, forex, commodities] }
+        available: { type: boolean }
+        timeframe: { type: string, enum: [1m, 5m, 15m, 1h, multi-timeframe] }
+        source_updated_at: { type: [string, 'null'], format: date-time }
+        request_coverage_url: { type: string }
+    CoverageManifest:
+      type: object
+      required: [generated_at, markets, instruments]
+      properties:
+        generated_at: { type: string, format: date-time }
+        markets:
+          type: array
+          items:
+            type: object
+            required: [market, configured_count, available_count, available]
+            properties:
+              market: { type: string }
+              configured_count: { type: integer }
+              available_count: { type: integer }
+              available: { type: boolean }
+        instruments:
+          type: array
+          items: { $ref: '#/components/schemas/CoverageInstrument' }

@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "draconic": {
+      "url": "https://mcp.draconic.ai/mcp",
+      "auth": {
+        "CLIENT_ID": "10e88ba3-e3d6-4d5c-bf7f-148ca36c79ba",
+        "scopes": [
+          "openid",
+          "profile",
+          "email",
+          "offline_access"
+        ]
+      }
+    }
+  }
+}

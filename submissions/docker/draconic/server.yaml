@@ -1,0 +1,22 @@
+name: draconic
+type: remote
+dynamic:
+  tools: true
+meta:
+  category: finance
+  tags:
+    - finance
+    - market-intelligence
+    - trading
+    - remote
+about:
+  title: Draconic Market Intelligence
+  description: Add current multi-signal market intelligence for supported instruments to an AI workflow.
+  icon: https://draconic.ai/favicon.ico
+remote:
+  transport_type: streamable-http
+  url: https://mcp.draconic.ai/mcp
+oauth:
+  - provider: draconic
+    secret: draconic.personal_access_token
+    env: DRACONIC_PERSONAL_ACCESS_TOKEN

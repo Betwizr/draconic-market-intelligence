@@ -1,0 +1,99 @@
+{
+  "info": {
+    "_postman_id": "0c8c778e-416e-4a8d-bc91-cab4fac5e182",
+    "name": "Draconic Intelligence API",
+    "description": "Add Draconic's analysis-only market intelligence to an algo, terminal, alerting system, research workflow, or software product. Successful analysis uses one existing Draconic credit. Coverage and usage checks are free.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      { "key": "key", "value": "X-API-Key", "type": "string" },
+      { "key": "value", "value": "{{api_key}}", "type": "string" },
+      { "key": "in", "value": "header", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "base_url", "value": "https://api.draconic.ai" },
+    { "key": "api_key", "value": "" },
+    { "key": "symbol", "value": "NIFTY50" }
+  ],
+  "item": [
+    {
+      "name": "Intelligence",
+      "item": [
+        {
+          "name": "Ask Draconic",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"question\": \"Where do structure and momentum conflict?\",\n  \"market\": \"nse\",\n  \"instruments\": [\"{{symbol}}\"],\n  \"timeframe\": \"multi-timeframe\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/agents/ask",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "agents", "ask"]
+            },
+            "description": "Runs one open-ended Draconic analysis for one to five supported instruments. A successful response saves the conversation and uses one existing Draconic credit. This endpoint is designed for supervisory decision points, not per-tick execution."
+          }
+        },
+        {
+          "name": "Get Account Usage",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/agents/usage",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "agents", "usage"]
+            },
+            "description": "Returns the shared Draconic plan and credit balance without consuming a credit."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Coverage",
+      "auth": { "type": "noauth" },
+      "item": [
+        {
+          "name": "List Live Coverage",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/agents/coverage?timeframe=5m",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "agents", "coverage"],
+              "query": [
+                { "key": "timeframe", "value": "5m" }
+              ]
+            },
+            "description": "Returns current availability derived from source-data freshness. It returns no market prices and consumes no credit."
+          }
+        },
+        {
+          "name": "Check One Instrument",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/agents/coverage/{{symbol}}?timeframe=multi-timeframe",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "agents", "coverage", "{{symbol}}"],
+              "query": [
+                { "key": "timeframe", "value": "multi-timeframe" }
+              ]
+            },
+            "description": "Checks whether one instrument is currently supported and fresh before a paid analysis runs."
+          }
+        }
+      ]
+    }
+  ]
+}

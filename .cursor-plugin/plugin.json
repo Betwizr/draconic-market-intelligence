@@ -1,0 +1,22 @@
+{
+  "name": "draconic-market-intelligence",
+  "displayName": "Draconic Market Intelligence",
+  "version": "1.0.0",
+  "description": "Bring Draconic's current multi-signal market intelligence into Cursor.",
+  "author": {
+    "name": "Six Singularities Private Limited",
+    "email": "support@draconic.ai"
+  },
+  "homepage": "https://draconic.ai/agents",
+  "publisher": "Six Singularities Private Limited",
+  "category": "Finance",
+  "license": "MIT",
+  "keywords": [
+    "finance",
+    "market-intelligence",
+    "trading",
+    "mcp"
+  ],
+  "logo": "assets/logo.svg",
+  "mcpServers": "./mcp.json"
+}
