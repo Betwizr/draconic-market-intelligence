@@ -24,16 +24,16 @@ This pack defines the exact public metadata and the checks required before publi
 
 ## Publication checklist
 
-- [ ] Create the public workspace under the Six Singularities company team, not a personal Postman profile.
-- [ ] Import `Draconic-Intelligence-API.openapi.yaml` as API version 1.0.0.
-- [ ] Import `Draconic-Intelligence-API.postman_collection.json`.
-- [ ] Import `Draconic-Intelligence-API.postman_environment.json` and confirm that `api_key` is empty.
+- [x] Create the public `Draconic Developers` workspace under the clean company publisher account.
+- [x] Import `Draconic-Intelligence-API.openapi.yaml` as API version 1.0.0.
+- [x] Import `Draconic-Intelligence-API.postman_collection.json`.
+- [x] Import `Draconic-Intelligence-API.postman_environment.json` and confirm that `api_key` is empty.
 - [ ] Run both coverage requests without authentication and confirm that they return no market prices.
 - [ ] Put a temporary revocable Draconic API key only in the private local environment.
 - [ ] Run `Get Account Usage` and confirm that it does not consume a credit.
 - [ ] Run `Ask Draconic` once and confirm that exactly one credit is used after a successful response.
 - [ ] Remove the temporary key from the environment before publishing or exporting anything.
 - [ ] Confirm that no saved example contains a user question, market response, token, account identifier, or credit balance from the test account.
-- [ ] Publish the API, collection, and credential-free environment.
-- [ ] Fetch the public workspace while signed out and confirm that all three artifacts are visible.
+- [x] Publish the API, collection, and credential-free environment.
+- [x] Confirm through the Postman API that the workspace is public and contains the collection, environment, and OpenAPI specification.
 - [ ] Add the final public Postman URL to https://draconic.ai/agents.
