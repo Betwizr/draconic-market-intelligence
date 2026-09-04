@@ -104,6 +104,10 @@ def main() -> None:
     if cursor_server.get("auth", {}).get("scopes") != ["openid", "profile", "email", "offline_access"]:
         fail("mcp.json has unexpected OAuth scopes")
 
+    cursor_plugin = json_file(".cursor-plugin/plugin.json")
+    if cursor_plugin.get("repository") != "https://github.com/Betwizr/draconic-market-intelligence":
+        fail("the Cursor plugin manifest has an unexpected repository URL")
+
     cline = json_file("configs/cline.mcp.json")
     cline_server = cline.get("mcpServers", {}).get("draconic", {}) if isinstance(cline, dict) else {}
     if cline_server.get("url") != MCP_URL or cline_server.get("type") != "streamableHttp":

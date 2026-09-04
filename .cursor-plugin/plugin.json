@@ -1,6 +1,5 @@
 {
   "name": "draconic-market-intelligence",
-  "displayName": "Draconic Market Intelligence",
   "version": "1.0.0",
   "description": "Bring Draconic's current multi-signal market intelligence into Cursor.",
   "author": {
@@ -8,8 +7,7 @@
     "email": "support@draconic.ai"
   },
   "homepage": "https://draconic.ai/agents",
-  "publisher": "Six Singularities Private Limited",
-  "category": "Finance",
+  "repository": "https://github.com/Betwizr/draconic-market-intelligence",
   "license": "MIT",
   "keywords": [
     "finance",

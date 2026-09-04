@@ -1,6 +1,6 @@
 # Cline marketplace submission
 
-The Cline submission is ready after this repository is public and one real Cline host test passes.
+The repository and issue copy are ready. Cline's official approval process requires one real test where Cline receives only the README (or an optional `llms-install.md`) and successfully connects. The README is sufficient here, so no extra installation file is needed.
 
 ## Issue title
 
@@ -35,3 +35,15 @@ Draconic is already active in the official MCP Registry. The repository contains
 ```
 
 Do not check the three installation boxes until the real Cline host test passes.
+
+## Final gate
+
+- [x] Public GitHub repository
+- [x] 400x400 PNG logo
+- [x] Hosted Streamable HTTP and OAuth setup documented in the README
+- [x] Repository validator and clean tracked-file-copy validation pass
+- [ ] Run one real Cline host test from the README alone
+- [ ] Confirm OAuth completes and exactly three tools appear
+- [ ] Create the submission issue at https://github.com/cline/mcp-marketplace/issues/new
+
+The real Cline test is the only technical blocker. Creating the issue is an external publication and needs confirmation at the final submit action.
