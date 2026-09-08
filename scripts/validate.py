@@ -134,6 +134,15 @@ def main() -> None:
     paths = {request.get("url", {}).get("raw", "").removeprefix("{{base_url}}") for request in requests}
     if paths != EXPECTED_POSTMAN_PATHS:
         fail("the Postman collection request set changed unexpectedly")
+    analysis_bodies = [json.loads(request["body"]["raw"]) for request in requests
+                       if request.get("url", {}).get("raw") == "{{base_url}}/v1/agents/ask"]
+    if len(analysis_bodies) != 2:
+        fail("the collection must have exactly two credit-consuming analysis examples")
+    if not any(body.get("instruments") for body in analysis_bodies):
+        fail("the named-instrument example is missing")
+    if not any(body.get("market_wide") is True and body.get("market") in {"nse", "us"}
+               and not body.get("instruments") for body in analysis_bodies):
+        fail("the market-wide example must work without an invented instrument")
 
     openapi = (ROOT / "postman/Draconic-Intelligence-API.openapi.yaml").read_text(encoding="utf-8")
     for path in {item.split("?")[0].replace("{{symbol}}", "{symbol}") for item in EXPECTED_POSTMAN_PATHS}:

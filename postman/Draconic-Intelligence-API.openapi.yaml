@@ -135,15 +135,27 @@ components:
     AskRequest:
       type: object
       additionalProperties: false
-      required: [question, market, instruments]
+      required: [question, market]
+      oneOf:
+        - required: [instruments]
+          properties:
+            instruments: { minItems: 1 }
+            market_wide: { const: false }
+        - required: [market_wide]
+          properties:
+            market_wide: { const: true }
+            market: { enum: [nse, us] }
       properties:
         question: { type: string, minLength: 1, maxLength: 20000 }
         market: { type: string, enum: [nse, us, crypto, forex, commodities] }
         instruments:
           type: array
-          minItems: 1
           maxItems: 5
           items: { type: string }
+        market_wide:
+          type: boolean
+          default: false
+          description: Set true for NSE/India or US market-wide analysis; instruments may then be omitted. Overview data must be available.
         timeframe:
           type: string
           enum: [1m, 5m, 15m, 1h, multi-timeframe]
@@ -153,6 +165,14 @@ components:
       type: object
       required: [analysis, chat_id, coverage]
       properties:
+        chart:
+          type: [object, 'null']
+          required: [chart_type, items]
+          properties:
+            chart_type: { type: string }
+            items:
+              type: array
+              items: { type: object, additionalProperties: true }
         analysis: { type: string }
         chat_id: { type: string }
         message_ids:

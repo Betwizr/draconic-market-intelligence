@@ -2,21 +2,42 @@
   "info": {
     "_postman_id": "0c8c778e-416e-4a8d-bc91-cab4fac5e182",
     "name": "Draconic Intelligence API",
-    "description": "Add Draconic's analysis-only market intelligence to an algo, terminal, alerting system, research workflow, or software product. Successful analysis uses one existing Draconic credit. Coverage and usage checks are free.",
+    "description": "Add Draconic's analysis-only market intelligence to an algo, terminal, alerting system, research workflow, or software product. Successful analysis uses one existing Draconic credit. Coverage and usage checks are free. Running the complete collection makes two paid analysis requests (two credits). It does not place trades, read broker accounts or create alerts.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
     "type": "apikey",
     "apikey": [
-      { "key": "key", "value": "X-API-Key", "type": "string" },
-      { "key": "value", "value": "{{api_key}}", "type": "string" },
-      { "key": "in", "value": "header", "type": "string" }
+      {
+        "key": "key",
+        "value": "X-API-Key",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{api_key}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
     ]
   },
   "variable": [
-    { "key": "base_url", "value": "https://api.draconic.ai" },
-    { "key": "api_key", "value": "" },
-    { "key": "symbol", "value": "NIFTY50" }
+    {
+      "key": "base_url",
+      "value": "https://api.draconic.ai"
+    },
+    {
+      "key": "api_key",
+      "value": ""
+    },
+    {
+      "key": "symbol",
+      "value": "NIFTY50"
+    }
   ],
   "item": [
     {
@@ -27,20 +48,92 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json", "type": "text" }
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"question\": \"Where do structure and momentum conflict?\",\n  \"market\": \"nse\",\n  \"instruments\": [\"{{symbol}}\"],\n  \"timeframe\": \"multi-timeframe\"\n}",
-              "options": { "raw": { "language": "json" } }
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             },
             "url": {
               "raw": "{{base_url}}/v1/agents/ask",
-              "host": ["{{base_url}}"],
-              "path": ["v1", "agents", "ask"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "agents",
+                "ask"
+              ]
             },
-            "description": "Runs one open-ended Draconic analysis for one to five supported instruments. A successful response saves the conversation and uses one existing Draconic credit. This endpoint is designed for supervisory decision points, not per-tick execution."
-          }
+            "description": "Analyze one to five supported instruments, including options positioning where data exists and relevant market/news context. One successful analysis uses one shared Draconic credit. Pass chat_id from the response for a follow-up."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Analysis succeeds', () => pm.response.to.have.status(200));",
+                  "pm.test('Analysis contract is present', () => { const d = pm.response.json(); pm.expect(d.analysis).to.be.a('string').and.not.empty; pm.expect(d.chat_id).to.be.a('string').and.not.empty; pm.expect(d.coverage.source_updated_at).to.be.a('string'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ask Market-Wide",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"question\": \"Which NSE sectors are leading, and what does market breadth show? State source times.\",\n  \"market\": \"nse\",\n  \"market_wide\": true,\n  \"timeframe\": \"15m\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/agents/ask",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "agents",
+                "ask"
+              ]
+            },
+            "description": "NSE/India or US market-wide analysis when overview data is available. No instrument anchor is required. Costs one credit. This is not universal market coverage."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Analysis succeeds', () => pm.response.to.have.status(200));",
+                  "pm.test('Analysis contract is present', () => { const d = pm.response.json(); pm.expect(d.analysis).to.be.a('string').and.not.empty; pm.expect(d.chat_id).to.be.a('string').and.not.empty; pm.expect(d.coverage.source_updated_at).to.be.a('string'); });"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Get Account Usage",
@@ -49,8 +142,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/v1/agents/usage",
-              "host": ["{{base_url}}"],
-              "path": ["v1", "agents", "usage"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "agents",
+                "usage"
+              ]
             },
             "description": "Returns the shared Draconic plan and credit balance without consuming a credit."
           }
@@ -59,7 +158,9 @@
     },
     {
       "name": "Coverage",
-      "auth": { "type": "noauth" },
+      "auth": {
+        "type": "noauth"
+      },
       "item": [
         {
           "name": "List Live Coverage",
@@ -68,14 +169,35 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/v1/agents/coverage?timeframe=5m",
-              "host": ["{{base_url}}"],
-              "path": ["v1", "agents", "coverage"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "agents",
+                "coverage"
+              ],
               "query": [
-                { "key": "timeframe", "value": "5m" }
+                {
+                  "key": "timeframe",
+                  "value": "5m"
+                }
               ]
             },
-            "description": "Returns current availability derived from source-data freshness. It returns no market prices and consumes no credit."
-          }
+            "description": "Returns supported coverage and source timestamps without authentication or charging. Availability flags indicate recency; older or after-close data may still be usable for analysis."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Coverage succeeds', () => pm.response.to.have.status(200));",
+                  "pm.test('Coverage is JSON', () => pm.expect(pm.response.json()).to.be.an('object'));"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Check One Instrument",
@@ -84,14 +206,36 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/v1/agents/coverage/{{symbol}}?timeframe=multi-timeframe",
-              "host": ["{{base_url}}"],
-              "path": ["v1", "agents", "coverage", "{{symbol}}"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "agents",
+                "coverage",
+                "{{symbol}}"
+              ],
               "query": [
-                { "key": "timeframe", "value": "multi-timeframe" }
+                {
+                  "key": "timeframe",
+                  "value": "multi-timeframe"
+                }
               ]
             },
-            "description": "Checks whether one instrument is currently supported and fresh before a paid analysis runs."
-          }
+            "description": "Returns supported coverage and source timestamps without authentication or charging. Availability flags indicate recency; older or after-close data may still be usable for analysis."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Coverage succeeds', () => pm.response.to.have.status(200));",
+                  "pm.test('Coverage is JSON', () => pm.expect(pm.response.json()).to.be.an('object'));"
+                ]
+              }
+            }
+          ]
         }
       ]
     }

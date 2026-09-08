@@ -24,14 +24,16 @@ This pack defines the exact public metadata and the checks required before publi
 
 ## Publication checklist
 
+September8 validation: the updated collection's exact five HTTP requests passed against production using a temporary in-memory key. Both analysis requests completed and the observed plan balance decreased by exactly two credits. Both coverage requests passed without authentication, account usage passed, and the key was revoked. This was a collection-request smoke harness, not a Postman UI or Newman run. The local collection/OpenAPI examples include market_wide; the hosted Postman copy still needs synchronization. No account responses or real keys are saved in this public pack.
+
 - [x] Create the public `Draconic Developers` workspace under the clean company publisher account.
 - [x] Import `Draconic-Intelligence-API.openapi.yaml` as API version 1.0.0.
 - [x] Import `Draconic-Intelligence-API.postman_collection.json`.
 - [x] Import `Draconic-Intelligence-API.postman_environment.json` and confirm that `api_key` is empty.
-- [ ] Run both coverage requests without authentication and confirm that they return no market prices.
+- [x] Run both coverage requests without authentication and confirm that they return no market prices.
 - [ ] Put a temporary revocable Draconic API key only in the private local environment.
-- [ ] Run `Get Account Usage` and confirm that it does not consume a credit.
-- [ ] Run `Ask Draconic` once and confirm that exactly one credit is used after a successful response.
+- [x] Run `Get Account Usage` and confirm that it does not consume a credit.
+- [x] Run both analysis examples and confirm that the combined observed deduction is two credits.
 - [ ] Remove the temporary key from the environment before publishing or exporting anything.
 - [ ] Confirm that no saved example contains a user question, market response, token, account identifier, or credit balance from the test account.
 - [x] Publish the API, collection, and credential-free environment.

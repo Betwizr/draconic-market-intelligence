@@ -4,6 +4,8 @@ Import the collection and environment template into Postman. Create a revocable 
 
 The template contains no credential. Do not commit or publish an exported environment after adding a real key.
 
+The collection includes named-instrument analysis and an explicit market-wide example for NSE/India or US. Running both analysis examples uses two credits. Options and news context depend on available data; no broker actions or alerts are performed. Pass the returned chat_id to continue an analysis rather than starting an unrelated conversation.
+
 The collection separates the two behaviors:
 
 - `Ask Draconic` and `Get Account Usage` require an API key.
