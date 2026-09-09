@@ -28,7 +28,7 @@ claude mcp add --scope user --transport http draconic https://mcp.draconic.ai/mc
 
 ```bash
 codex mcp add draconic --url https://mcp.draconic.ai/mcp
-codex mcp login draconic
+codex mcp login draconic --scopes openid,profile,email,offline_access
 ```
 
 Complete the browser sign-in, then restart your Codex session. Adding the server alone does not sign you in. Ask Codex to check your Draconic account usage first; that check is free.
@@ -70,7 +70,7 @@ Draconic provides analysis only. These tools cannot access a broker, place a tra
 
 ## What has been verified
 
-- Claude Code and Codex have completed real free and paid calls.
+- Claude Code and native Codex MCP have completed real free and paid calls. Native Codex analysis and the one-credit charge were reverified on September 9, 2026. This does not claim chart rendering in every client.
 - Cursor has completed OAuth sign-in and discovered all three tools.
 - Cline and Docker installation files are prepared for host testing and marketplace review. They are not described as host-verified yet.
 
