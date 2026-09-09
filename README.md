@@ -12,6 +12,8 @@ https://mcp.draconic.ai/mcp
 
 The server is also active in the [official MCP Registry](https://registry.modelcontextprotocol.io/v0.1/servers?search=ai.draconic%2Fmarket-intelligence).
 
+[![Listed on mcpservers.org](https://mcpservers.org/badge.svg)](https://mcpservers.org/servers/betwizr/draconic-market-intelligence)
+
 ## Connect Draconic
 
 Every client opens the Draconic sign-in and consent screen. The connection uses your existing Draconic account and shared credit balance.
@@ -26,7 +28,12 @@ claude mcp add --scope user --transport http draconic https://mcp.draconic.ai/mc
 
 ```bash
 codex mcp add draconic --url https://mcp.draconic.ai/mcp
+codex mcp login draconic
 ```
+
+Complete the browser sign-in, then restart your Codex session. Adding the server alone does not sign you in. Ask Codex to check your Draconic account usage first; that check is free.
+
+The native MCP connection above is separate from using the installed ChatGPT plugin inside Codex. On September 9, the plugin path returned an analysis-response error even though Draconic generated the answer. That client-specific issue remains under investigation; do not repeatedly retry a charged analysis. Account-usage checks still work.
 
 ### Cursor
 
@@ -53,7 +60,7 @@ Add `https://mcp.draconic.ai/mcp` as a remote Streamable HTTP server. Complete t
 
 ## What the tools do
 
-- `ask_draconic` answers an open-ended analytical question about one to five currently supported instruments. A successful answer uses one existing Draconic credit.
+- `ask_draconic` answers an open-ended analytical question about one to five currently supported instruments. It also accepts `market_wide=true` for supported market and sector context without inventing an anchor instrument. A successful answer uses one existing Draconic credit.
 - `get_coverage` reports the currently supported markets, instruments, and timeframes. It is free and returns no market prices.
 - `get_account_usage` reports the authenticated account's shared Draconic credit balance. It is free.
 
@@ -79,7 +86,7 @@ The direct API is intended for meaningful supervisory calls from an algo, termin
 - [Privacy policy](https://draconic.ai/privacy-policy)
 - [Terms of service](https://draconic.ai/terms-of-service)
 - [Disclaimer](https://draconic.ai/disclaimer)
-- [Support](mailto:support@draconic.ai)
+- For support, email support@draconic.ai. The [setup guide](https://draconic.ai/agents) explains account access and installation.
 
 The MIT License covers the public documentation, configuration files, and validation script in this repository. It does not license the hosted Draconic service, its models, data, system prompts, or proprietary market-intelligence methods.
 
