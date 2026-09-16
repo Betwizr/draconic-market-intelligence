@@ -80,6 +80,8 @@ Software can call the same Draconic intelligence through the direct API. The Pos
 
 The direct API is intended for meaningful supervisory calls from an algo, terminal, alerting system, research workflow, or software product. It is not a raw feed, per-tick signal, execution service, or high-frequency trading interface.
 
+The [API workflow guide](https://draconic.ai/api#api-guide) covers market briefings, scanner enrichment, session updates, comparisons, supplied-position reviews, and thesis checks. It includes first-call and follow-up examples, response handling, and recovery guidance. Reuse the returned `chat_id` for related updates. The response envelope is JSON; `analysis` contains the complete Markdown market reading, not a fixed numerical trading-signal schema.
+
 ## Product and support
 
 - [Product page and setup guide](https://draconic.ai/agents)
