@@ -82,6 +82,8 @@ The direct API is intended for meaningful supervisory calls from an algo, termin
 
 The [API workflow guide](https://draconic.ai/api#api-guide) covers market briefings, scanner enrichment, session updates, comparisons, supplied-position reviews, and thesis checks. It includes first-call and follow-up examples, response handling, and recovery guidance. Reuse the returned `chat_id` for related updates. The response envelope is JSON; `analysis` contains the complete Markdown market reading, not a fixed numerical trading-signal schema.
 
+For a runnable starting point, use the [two-step market brief example](examples/market-brief). It asks for a NIFTY read, saves the complete answer, then challenges that read in the same conversation when you choose. It uses Python's standard library, keeps your key out of saved files, and makes no automatic background calls. Running both steps uses two credits.
+
 ## Product and support
 
 - [Product page and setup guide](https://draconic.ai/agents)

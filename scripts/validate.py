@@ -72,7 +72,7 @@ def postman_requests(items: list[dict]) -> list[dict]:
 
 
 def main() -> None:
-    files = [path for path in ROOT.rglob("*") if path.is_file() and ".git" not in path.parts]
+    files = [path for path in ROOT.rglob("*") if path.is_file() and not {".git", "__pycache__"}.intersection(path.parts)]
     relative_files = {str(path.relative_to(ROOT)) for path in files}
 
     missing = REQUIRED_JSON - relative_files

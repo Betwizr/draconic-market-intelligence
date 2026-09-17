@@ -17,6 +17,8 @@ The analysis endpoint is intended for meaningful supervisory calls from software
 
 Read the [API workflow guide](https://draconic.ai/api#api-guide) for six practical scenarios, request examples, and current integration limits.
 
+Prefer a small working script? The [two-step market brief example](../examples/market-brief) makes an initial NIFTY request and a related follow-up, preserves both complete responses, and shows exactly how to reuse the conversation. You choose when each request runs; both successful requests use two credits in total.
+
 For related updates, copy the returned `chat_id` into the next request body. The service uses up to twenty recent turns; retain complete responses in your own system for longer comparisons. Each successful analysis uses one credit.
 
 The response is JSON, but `analysis` is Markdown text. Ask a market question, not for code or a new output schema. Keep the complete analysis, source timing, contrary evidence, and “What changes the read”. If another model extracts fields or summarizes it, validate that output and preserve the original. Missing values are unknown, not zero.
